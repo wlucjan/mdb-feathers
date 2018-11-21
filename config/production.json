@@ -1,4 +1,4 @@
 {
-  "host": "mdb-feathers-app.feathersjs.com",
+  "host": "mdb-feathers.herokuapp.com",
   "port": "PORT"
 }
