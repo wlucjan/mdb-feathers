@@ -42,12 +42,6 @@ An export of Postman collection documenting API endpoints can be found in `doc/`
 ## Demo
 Live demo of the API is available at [Heroku](https://mdb-feathers.herokuapp.com)
 
-## Changelog
-
-__0.1.6__
-
-- Initial release
-
 ## License
 
 Copyright (c) 2018
