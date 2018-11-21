@@ -1,0 +1,37 @@
+version: '3'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+      args:
+        DEV: 1
+    ports:
+      - "8080:80"
+      - "5858:5858"
+    volumes:
+      - ".:/usr/src/app"
+    command:
+      - pm2-dev
+      - process.dev.yml
+    environment:
+      - "NODE_ENV=development"
+      - "HOSTNAME"
+      - "PORT"
+      - "DB_HOST"
+      - "DB_PORT"
+      - "DB_DATABASE"
+      - "DB_USER"
+      - "DB_PASSWORD"
+      - "OMDB_API_KEY"
+  db:
+    image: postgres:11.1-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/data:/var/lib/postgresql/data
+    environment:
+      - "POSTGRES_PASSWORD=${DB_PASSWORD}"
+      - "POSTGRES_DB=${DB_DATABASE}"
+      - "POSTGRES_USER=${DB_USER}"
+      - "POSTGRES_INITDB_ARGS=\"-E UTF-8\""

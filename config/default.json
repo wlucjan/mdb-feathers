@@ -1,0 +1,22 @@
+{
+  "host": "HOSTNAME",
+  "port": "PORT",
+  "external": {
+    "host": "EXTERNAL_HOSTNAME",
+    "port": "EXTERNAL_PORT"
+  },
+  "public": "../public/",
+  "paginate": {
+    "default": 10,
+    "max": 50
+  },
+  "postgres": {
+    "client": "pg",
+    "connection": {
+      "host" : "db",
+      "user" : "DB_USER",
+      "password" : "DB_PASSWORD",
+      "database" : "DB_DATABASE"
+    }
+  }
+}
