@@ -1,9 +1,12 @@
 const axios = require('axios')
+const logger = require('../logger')
+
+const isValidResponse = data => data.Response === 'True'
 
 class OpenMoviesDatabase {
   async get (title, params) {
     try {
-      return (await axios.get(
+      const { data } = await axios.get(
         `http://www.omdbapi.com`,
         {
           params: {
@@ -11,9 +14,11 @@ class OpenMoviesDatabase {
             apikey: process.env.OMDB_API_KEY
           }
         }
-      )).data
+      )
+
+      return isValidResponse(data) ? data : {}
     } catch (err) {
-      console.log(err)
+      logger.info(err)
     }
   }
 }
