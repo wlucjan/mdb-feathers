@@ -39,6 +39,23 @@ Simply run `yarn test` and all your tests in the `test/` directory will be run.
 ## API docs
 An export of Postman collection documenting API endpoints can be found in `doc/` directory.
 
+### Movie entity
+#### Properties
+- title: string, required, unique
+- poster: string
+- director: string
+- writer: string
+- actors: string
+- plot: text
+- imdbRating: decimal
+
+### Comment entity
+#### Properties
+- author: string, required
+- comment: text, required
+- movie_id: integer, required
+- created_at: datetime
+
 ## Demo
 Live demo of the API is available at [Heroku](https://mdb-feathers.herokuapp.com)
 
