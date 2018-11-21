@@ -5,13 +5,14 @@
 version: 2.1
 
 defaults: &defaults
-  docker:
-    - image: circleci/node:10.13
+  machine: true
   working_directory: ~/mdb-feathers
 
 jobs:
   test:
-    <<: *defaults
+    docker:
+      - image: circleci/node:10.13
+    working_directory: ~/mdb-feathers
     steps:
       - checkout
       - restore_cache:
