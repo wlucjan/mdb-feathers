@@ -22,4 +22,4 @@ COPY . /usr/src/app
 
 EXPOSE 80
 
-CMD ["pm2-docker", "./src/app.js"]
+CMD ["pm2-docker", "./src/index.js"]
