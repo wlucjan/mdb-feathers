@@ -1,44 +1,32 @@
 const R = require('ramda')
+const logger = require('../../../logger')
 
-const pickRelevantMovieData = R.compose(
-  R.zipObj([
-    'title',
-    'director',
-    'writer',
-    'actors',
-    'plot',
-    'poster',
-    'imdbRating'
-  ]),
-  R.values,
-  R.pick([
-    'Title',
-    'Director',
-    'Writer',
-    'Actors',
-    'Plot',
-    'Poster',
-    'imdbRating'
-  ])
-)
+const pickRelevantMovieData = R.applySpec({
+  title: R.prop('Title'),
+  director: R.prop('Director'),
+  writer: R.prop('Writer'),
+  actors: R.prop('Actors'),
+  plot: R.prop('Plot'),
+  poster: R.prop('Poster'),
+  imdbRating: R.prop('imdbRating')
+})
 
 module.exports = async context => {
-  let omdbMovieData = {}
   const { app, data } = context
 
   try {
-    omdbMovieData = await app.services.omdb.get(data.title)
-  } catch (err) {
-    console.log(err)
-  }
+    const omdbMovieData = await app.services.omdb.get(data.title)
 
-  context.data = R.compose(
-    R.mergeAll,
-    R.juxt([
-      pickRelevantMovieData,
-      R.always(data)
-    ])
-  )(omdbMovieData)
+    context.data = R.compose(
+      R.mergeAll,
+      R.juxt([
+        pickRelevantMovieData,
+        R.always(data)
+      ])
+    )(omdbMovieData)
+  } catch (err) {
+    logger.info(err)
+  }
 
   return context
 }
