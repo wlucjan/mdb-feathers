@@ -10,7 +10,7 @@ module.exports = {
     get: [],
     create: [
       required('title'),
-      escapeHtml('title', 'plot'),
+      escapeHtml('title', 'director', 'writer', 'actors', 'plot', 'poster'),
       populateMissingFieldsFromOmdb
     ],
     update: [],
