@@ -28,19 +28,14 @@ jobs:
           name: Run tests
           command: yarn test
 
-  build:
+  build-and-deploy:
     <<: *defaults
     steps:
       - checkout
       - run:
           name: Build Docker Image
-          command: docker build . -f docker/Dockerfile -t wlucjan/mdb-feathers:$CIRCLE_SHA1
-  deploy:
-    <<: *defaults
-    steps:
-      - run:
-          name: Deploy Docker Image
           command: |
+            docker build . -f docker/Dockerfile -t wlucjan/mdb-feathers:$CIRCLE_SHA1
             docker login -u $HEROKU_LOGIN -p $HEROKU_API_KEY registry.heroku.com
             docker tag wlucjan/mdb-feathers:$CIRCLE_SHA1 registry.heroku.com/$HEROKU_APP_NAME/web
             docker push registry.heroku.com/$HEROKU_APP_NAME/web
@@ -49,12 +44,9 @@ workflows:
   build-deploy:
     jobs:
       - test
-      - build:
+      - build-and-deploy:
           requires:
             - test
           filters:
             branches:
               only: master
-      - deploy:
-          requires:
-            - build
