@@ -28,7 +28,7 @@ Getting up and running is as easy as 1, 2, 3, 4, 5.
     ```
 5. Migrate db schema
     ```
-      docker-compose exec api ./node_modules/.bin/knex migrate:latest
+    docker-compose exec api ./node_modules/.bin/knex migrate:latest
     ```
 5. API will be available at `localhost:8080`
 
@@ -48,3 +48,5 @@ __0.1.0__
 Copyright (c) 2018
 
 Licensed under the [MIT license](LICENSE).
+
+[![CircleCI](https://circleci.com/gh/wlucjan/mdb-feathers/tree/develop.svg?style=svg)](https://circleci.com/gh/wlucjan/mdb-feathers/tree/develop)

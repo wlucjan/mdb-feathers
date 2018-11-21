@@ -1,0 +1,147 @@
+{
+	"info": {
+		"_postman_id": "d9f425bf-ab3d-4ffc-b20e-ea0894128f96",
+		"name": "MDB",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "movies",
+			"item": [
+				{
+					"name": "Get all movies",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_URL}}:{{API_PORT}}/movies",
+							"host": [
+								"{{API_URL}}"
+							],
+							"port": "{{API_PORT}}",
+							"path": [
+								"movies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a movie",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "128273cd-a8cf-4319-9eb1-91fa7f4fb09f",
+								"exec": [
+									"const jsonData = JSON.parse(responseBody);",
+									"",
+									"if (jsonData) {",
+									"    postman.setEnvironmentVariable(\"MOVIE_ID\", jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\": \"Mad Max\"\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}:{{API_PORT}}/movies",
+							"host": [
+								"{{API_URL}}"
+							],
+							"port": "{{API_PORT}}",
+							"path": [
+								"movies"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "comments",
+			"item": [
+				{
+					"name": "Create Comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"author\": \"Lucjan\",\n  \"comment\": \"Awesome movie\",\n  \"movie_id\": {{MOVIE_ID}}\n}"
+						},
+						"url": {
+							"raw": "{{API_URL}}:{{API_PORT}}/comments",
+							"host": [
+								"{{API_URL}}"
+							],
+							"port": "{{API_PORT}}",
+							"path": [
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all comments",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{API_URL}}:{{API_PORT}}/comments",
+							"host": [
+								"{{API_URL}}"
+							],
+							"port": "{{API_PORT}}",
+							"path": [
+								"comments"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
