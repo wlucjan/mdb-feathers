@@ -4,34 +4,61 @@
 #
 version: 2
 jobs:
-  build:
+  test:
     docker:
-      # specify the version you desire here
       - image: circleci/node:10.13
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
-    working_directory: ~/repo
+    working_directory: ~/mdb-feathers
 
     steps:
       - checkout
-
-      # Download and cache dependencies
       - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+        keys:
+          - deps1-{{ .Branch }}-{{ checksum "package.json" }}
+          - deps1-{{ .Branch }}
 
       - run: yarn install
 
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: deps1-{{ .Branch }}-{{ checksum "package.json" }}
 
       # run tests!
-      - run: yarn test
+      - run:
+        name: Run tests
+        command: yarn test
+
+  build:
+    docker:
+      - image: circleci/node:10.13
+    working_directory: ~/mdb-feathers
+    steps:
+      - checkout
+      - run:
+        name: Build Docker Image
+        command: docker build . -f docker/Dockerfile -t wlucjan/mdb-feathers:$CIRCLE_SHA1
+  deploy:
+    docker:
+      - image: circleci/node:10.13
+    steps:
+      - run:
+        name: Deploy Docker Image
+        command: |
+          docker login -u $HEROKU_LOGIN -p $HEROKU_API_KEY registry.heroku.com
+          docker tag wlucjan/mdb-feathers:$CIRCLE_SHA1 registry.heroku.com/$HEROKU_APP_NAME/web
+          docker push registry.heroku.com/$HEROKU_APP_NAME/web
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - test
+      - build:
+        requires:
+          - test
+        filters:
+          branches:
+            only: master
+      - deploy:
+        requires:
+          - build
